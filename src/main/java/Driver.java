@@ -19,13 +19,26 @@ public class Driver
 
     private void eventLoop(final Rep rep)
     {
+        int fails = 0;
         while(true)
         {
             final String query = getInput("What would you like to ask?");
             int index = isApproved(query);
             if(index >= 0)
             {
-                answer(index, rep);
+                fails = 0;
+                System.out.println(answer(index, rep));
+            }
+            else
+            {
+                ++fails;
+                if(fails == 3)
+                {
+                    System.err.println("You asked three bad questions in a row.");
+                    goodbye();
+                }
+                System.err.println("You must use one of the approved queries.");
+                showOptions();
             }
         }
     }
@@ -58,21 +71,22 @@ public class Driver
         return in.nextLine();
     }
 
-    private void answer(final int index, final Rep rep)
+    private String answer(final int index, final Rep rep)
     {
-        Object data;
-        switch (index)
+        Object data = switch (index) {
+            case 0 -> rep.getPersonalInfo();
+            case 1 -> rep.getAddress();
+            case 2 -> rep.getContactInfo();
+            case 3 -> rep.getCommittees();
+            case 4 -> rep.toString();
+            case 5 -> Arrays.toString(options);
+            default -> new Object();
+        };
+        if(index == 6)
         {
-            case 0: data = rep.getPersonalInfo(); break;
-            case 1: data = rep.getAddress(); break;
-            case 2: data = rep.getContactInfo(); break;
-            case 3: data = rep.getCommittees(); break;
-            case 4: data = rep.toString(); break;
-            case 5: data = Arrays.toString(options); break;
-            case 6: goodbye(); return;
-            default: showOptions(); return;
+            goodbye();
         }
-        System.out.println(data.toString());
+        return data.toString();
     }
 
     private void goodbye()

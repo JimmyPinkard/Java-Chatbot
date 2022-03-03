@@ -89,7 +89,7 @@ public class Rep
                 builder.append('\n');
             }
         }
-        return builder.append(entries[entries.length - 1]).toString();
+        return builder.append("and ").append(entries[entries.length - 1]).toString();
     }
 
     @Override

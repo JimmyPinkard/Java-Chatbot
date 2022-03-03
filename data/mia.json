@@ -9,8 +9,8 @@
   },
   "addresses":
   {
-    "columbia": "604 Gressette Bldg.\nColumbia 29201",
-    "home": "P. O. Box 290692\nColumbia 29229"
+    "columbia": "604 Gressette Bldg. Columbia 29201",
+    "home": "P. O. Box 290692 Columbia 29229"
   },
   "contactInfo":
   {
@@ -18,7 +18,7 @@
   },
   "committees":
   [
-    "Com", "Com 2", "Com 3", "Com 4"
+    "Corrections and Penology", "Family and Veterans' Services", "Judiciary", "Medical Affairs", "Rules"
   ],
   "information":
     [
