@@ -1,6 +1,5 @@
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Driver
@@ -8,9 +7,10 @@ public class Driver
     private final Scanner in = new Scanner(System.in);
     private final String[] options = new String[]{"Tell me about the rep", "Where does the rep live", "How do I contact my rep",
             "What committees is my rep on", "Tell me everything", "Help", "Bye"};
+    private final IO io = IO.getInstance();
+    private final Spyware spyware = Spyware.getInstance();
     private void run()
     {
-        final IO io = IO.getInstance();
         final JSONObject json = new JSONObject(io.readFile("data/mia.json"));
         Rep rep = new Rep(json);
         eventLoop(rep);
@@ -23,6 +23,7 @@ public class Driver
         while(true)
         {
             final String query = getInput("What would you like to ask?");
+            spyware.addQueries(query);
             int index = isApproved(query);
             if(index >= 0)
             {
@@ -79,9 +80,12 @@ public class Driver
             case 2 -> rep.getContactInfo();
             case 3 -> rep.getCommittees();
             case 4 -> rep.toString();
-            case 5 -> Arrays.toString(options);
             default -> new Object();
         };
+        if(index == 5)
+        {
+            showOptions();
+        }
         if(index == 6)
         {
             goodbye();
@@ -92,6 +96,7 @@ public class Driver
     private void goodbye()
     {
         in.close();
+        spyware.report();
         System.out.println("Goodbye");
         System.exit(0);
     }
