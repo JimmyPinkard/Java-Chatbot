@@ -12,11 +12,12 @@ public class Driver
     {
         final IO io = IO.getInstance();
         final JSONObject json = new JSONObject(io.readFile("data/mia.json"));
-        eventLoop(json);
+        Rep rep = new Rep(json);
+        eventLoop(rep);
         goodbye();
     }
 
-    private void eventLoop(final JSONObject json)
+    private void eventLoop(final Rep rep)
     {
         while(true)
         {
@@ -24,7 +25,7 @@ public class Driver
             int index = isApproved(query);
             if(index >= 0)
             {
-                answer(index, json);
+                answer(index, rep);
             }
         }
     }
@@ -57,16 +58,16 @@ public class Driver
         return in.nextLine();
     }
 
-    private void answer(final int index, final JSONObject json)
+    private void answer(final int index, final Rep rep)
     {
         Object data;
         switch (index)
         {
-            case 0: data = json.get("personalInfo").toString(); break;
-            case 1: data = json.get("addresses").toString(); break;
-            case 2: data = json.get("contactInfo").toString(); break;
-            case 3: data = json.get("committees").toString(); break;
-            case 4: data = json.toString(); break;
+            case 0: data = rep.getPersonalInfo(); break;
+            case 1: data = rep.getAddress(); break;
+            case 2: data = rep.getContactInfo(); break;
+            case 3: data = rep.getCommittees(); break;
+            case 4: data = rep.toString(); break;
             case 5: data = Arrays.toString(options); break;
             case 6: goodbye(); return;
             default: showOptions(); return;
