@@ -6,12 +6,13 @@ public class Driver
 {
     private Scanner in;
     private String[] options;
-    private Spyware spyware;
 
     private void run()
     {
-        initGlobals();
-        final IO io = IO.getInstance();
+        in = new Scanner(System.in);
+        IO io = IO.getInstance();
+        options = new String[]{"Tell me about the rep", "Where does the rep live", "How do I contact my rep",
+                "What committees is my rep on", "Tell me everything", "Help", "Bye"};
         final JSONObject json = new JSONObject(io.readFile("data/mia.json"));
         Rep rep = new Rep(json);
         eventLoop(rep);
@@ -24,7 +25,6 @@ public class Driver
         while(true)
         {
             final String query = getInput("What would you like to ask?");
-            spyware.addQueries(query);
             int index = isApproved(query);
             if(index >= 0)
             {
@@ -43,14 +43,6 @@ public class Driver
                 showOptions();
             }
         }
-    }
-
-    private void initGlobals()
-    {
-        options = new String[]{"Tell me about the rep", "Where does the rep live", "How do I contact my rep",
-                "What committees is my rep on", "Tell me everything", "Help", "Bye"};
-        in = new Scanner(System.in);
-        spyware = Spyware.getInstance();
     }
 
     private int isApproved(final String query)
@@ -105,7 +97,6 @@ public class Driver
     private void goodbye()
     {
         in.close();
-        spyware.report();
         System.out.println("Goodbye");
         System.exit(0);
     }
